@@ -7,6 +7,8 @@ form.addEventListener("submit", async (event) => {//This function will run when 
     //extract the values from the form fields and store them in variables
     const name = document.getElementById("name").value;
     const service = document.getElementById("service").value;
+    const phone_number = document.getElementById("phone_number").value;
+    const notes = document.getElementById("notes").value;
 
     
 const response = await fetch( // fetch waits for backend response before moving on to next line of code
@@ -20,7 +22,9 @@ const response = await fetch( // fetch waits for backend response before moving 
 
             body: JSON.stringify({
                 name: name,
-                service: service
+                phone_number: phone_number,
+                service: service,
+                notes: notes
             }) // this is the actual data we want to send. We create a JavaScript object with the name and service, then convert it to a JSON string with JSON.stringify
         }
     );

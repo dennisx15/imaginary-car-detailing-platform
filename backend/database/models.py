@@ -17,4 +17,6 @@ class Appointment(Base):
 
     # these columns will store the name and service of the appointment
     name = Column(String)
+    phone_number = Column(String)
     service = Column(String)
+    notes = Column(String)
