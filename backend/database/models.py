@@ -1,4 +1,4 @@
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase # 
 from sqlalchemy import Column, Integer, String
 
 
@@ -20,3 +20,11 @@ class Appointment(Base):
     phone_number = Column(String)
     service = Column(String)
     notes = Column(String)
+    user_id = Column(Integer) # this will store the id of the user who made the appointment. It's an integer that references the id column in the users table.
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    password_hash = Column(String)
