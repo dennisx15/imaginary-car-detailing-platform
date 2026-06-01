@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from passlib.context import CryptContext
 from backend.database.connection import SessionLocal
-from backend.models.user import UserCreate, UserLogin, UserRegister
+from backend.schemas.user import UserCreate, UserLogin, UserRegister
 from backend.database.models import User
 from jose import jwt, JWTError, ExpiredSignatureError
 from datetime import datetime, timedelta

@@ -30,6 +30,6 @@ This class defines the structure of the appointments table in the database. Each
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)#Primary key for the users table, unique identifier for each user. increments by 1 each time a user is added
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
