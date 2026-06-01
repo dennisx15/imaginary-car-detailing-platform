@@ -110,7 +110,8 @@ def delete_appointment(appointment_id: int, db: Session = Depends(get_db)):
     """
 
     appointment = db.query(Appointment).filter(Appointment.id == appointment_id).first() # this translates to "SELECT * FROM appointments WHERE id = {appointment_id} LIMIT 1" in SQL. It returns the first appointment that matches the id, or None if no appointment is found.
-    message = delete_appointment(db, appointment)
+    message = delete_db(db, appointment)
+    
 
     return {"message": message}
 
