@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class AppointmentCreate(BaseModel):
@@ -9,3 +10,4 @@ class AppointmentCreate(BaseModel):
     phone_number: str
     service: str
     notes: str
+    date: datetime

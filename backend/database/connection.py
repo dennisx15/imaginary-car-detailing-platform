@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from backend.config import constants
 
 from backend.database.models import Base
 
 
-DATABASE_URL = "postgresql://postgres:ZZqq112233@localhost:5432/car_detailer_db"
+DATABASE_URL = constants.DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 

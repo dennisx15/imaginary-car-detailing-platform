@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Apex Auto Detailing</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+ <nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="create_appointment.html">Book Appointment</a>
+    <a href="my_appointments.html">My Appointments</a>
+</nav>
+
+    <h1>Apex Auto Detailing</h1>
+
+    <h2>Book Appointment</h2>
+
+
+    <form id="appointment-form">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Customer Name"
+            required
+        >
+
+        <input
+            type="text"
+            id="service"
+            placeholder="Service"
+            required
+        >
+        <input
+            type="text"
+            id="phone_number"
+            placeholder="Phone Number"
+            required
+        >
+        <input
+            type="text"
+            id="notes"
+            placeholder="Notes"
+        >
+
+        <input
+        type="date"
+        id="appointment_time"
+        required
+        >
+
+        <button type="submit">
+            Submit
+        </button>
+
+
+    </form>
+
+    <h2>Available Slots</h2>
+    
+    <div id="slots-container"></div>
+
+    <p id="response-message"></p>
+
+    <script src="js/config.js"></script>
+    <script src="js/create_appointment.js"></script>
+
+</body>
+
+</html>

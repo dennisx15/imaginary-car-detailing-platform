@@ -1,5 +1,14 @@
 async function loadAppointments() {
-    const response = await fetch(`${API_BASE_URL}/appointments`);
+    const response = await authenticatedFetch(
+    `${API_BASE_URL}/my-appointments`,
+    {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+    }
+);
+
     const appointments = await response.json();
 
     const container = document.getElementById("appointments-container"); // get the container element in html where we want to display the appointments
@@ -22,10 +31,22 @@ async function loadAppointments() {
 loadAppointments()
 
 async function deleteAppointment(id){
-    await fetch(`${API_BASE_URL}/appointments/${id}`, 
+
+    const token = localStorage.getItem("token");
+    await authenticatedFetch(
+        
+        `${API_BASE_URL}/my-appointments/${id}`,
+
         {
-        method: "DELETE"
-    }
+            method: "DELETE",
+
+            headers: {
+                "Authorization":
+                    `Bearer ${token}`
+            }
+        }
     );
+
     location.reload();
 }
+

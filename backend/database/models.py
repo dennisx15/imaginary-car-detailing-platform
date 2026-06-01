@@ -1,5 +1,6 @@
 from sqlalchemy.orm import DeclarativeBase # 
 from sqlalchemy import Column, Integer, String
+from sqlalchemy import DateTime
 
 
 class Base(DeclarativeBase):
@@ -10,6 +11,9 @@ class Base(DeclarativeBase):
 
 
 class Appointment(Base):
+    """
+This class defines the structure of the appointments table in the database. Each instance of this class represents a row in the appointments table, and each attribute corresponds to a column in the table.
+    """
 
     __tablename__ = "appointments" # create an SQL table called appointments
 
@@ -20,6 +24,7 @@ class Appointment(Base):
     phone_number = Column(String)
     service = Column(String)
     notes = Column(String)
+    date = Column(DateTime) # this will store the date and time of the appointment. DateTime is a special type that can store both date and time information.
     user_id = Column(Integer) # this will store the id of the user who made the appointment. It's an integer that references the id column in the users table.
 
 class User(Base):

@@ -5,8 +5,8 @@ form.addEventListener("submit", async (event) => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch(
-        `http://127.0.0.1:8000/login`,
+    const response = await authenticatedFetch(
+        `${API_BASE_URL}/login`,
         {
             method: "POST",
             headers: {
@@ -39,3 +39,5 @@ document.getElementById("create-account-button").addEventListener("click", async
     event.preventDefault();
     window.location.href = "create_account.html";
 });
+
+

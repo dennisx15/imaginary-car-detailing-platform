@@ -3,8 +3,8 @@ form.addEventListener("submit", async (event) => {
     event.preventDefault(); // prevent the default form submission behavior, which would cause a page reload
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const response = await fetch(
-        `http://127.0.0.1:8000/register`,
+    const response = await authenticatedFetch(
+        `${API_BASE_URL}/register`,
         {
             method: "POST",
             headers: {
@@ -12,7 +12,6 @@ form.addEventListener("submit", async (event) => {
             },
             body: JSON.stringify({
                 email: email,
-                //TODO: remove user field and update backend to only require email and password for login
                 password: password
             })
         }
