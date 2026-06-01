@@ -5,11 +5,12 @@ from backend.models.user import UserCreate, UserLogin, UserRegister
 from backend.database.models import User
 from jose import jwt, JWTError, ExpiredSignatureError
 from datetime import datetime, timedelta
+from backend.config import constants
 
 
 #need to set a secret key and algorithm for JWT token generation. In a real application, you should use a strong, random secret key and keep it safe (not hardcoded in your code). For simplicity, we'll just use a hardcoded string here.
-SECRET_KEY = "super_secret_key"
-ALGORITHM = "HS256"
+SECRET_KEY = constants.SECRET_KEY
+ALGORITHM = constants.ALGORITHM
 
 router = APIRouter()
 
