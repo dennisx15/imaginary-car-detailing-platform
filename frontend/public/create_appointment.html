@@ -7,7 +7,7 @@
 
     <title>Apex Auto Detailing</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body>
@@ -33,12 +33,14 @@
             required
         >
 
-        <input
-            type="text"
-            id="service"
-            placeholder="Service"
-            required
-        >
+<label for="service">Choose a Detailing Service:</label>
+<select id="service" name="service" required>
+    <option value="" disabled selected>-- Select a Package --</option>
+    <option value="Executive Exterior Wash">Executive Exterior Wash ($75)</option>
+    <option value="Bronze Express Wash">Bronze Express Wash ($50)</option>
+    <option value="Silver Tier Interior">Silver Tier Interior ($75)</option>
+    <option value="Gold Tier">Gold Tier ($150)</option>
+</select>
         <input
             type="text"
             id="phone_number"
@@ -70,8 +72,8 @@
 
     <p id="response-message"></p>
 
-    <script src="js/config.js"></script>
-    <script src="js/create_appointment.js"></script>
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/create_appointment.js"></script>
 
 </body>
 

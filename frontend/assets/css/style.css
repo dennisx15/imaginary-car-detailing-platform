@@ -1,0 +1,78 @@
+.navbar {
+    background-color: #222;
+    padding: 15px;
+    display: flex;
+    gap: 30px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.navbar a:hover {
+    color: #4da6ff;
+}
+
+/* The Outer Grid Container */
+.catalog-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Individual Package Cards */
+.service-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Unique Accent for the Premium Gold Card */
+.gold {
+    border-top: 5px solid #d4af37; /* A sleek metallic gold top border */
+    background-color: #fffdf5;     /* A very subtle warm glow background */
+}
+
+/* Styling the Book Buttons */
+.btn {
+    display: inline-block;    /* Allows us to apply custom spacing and sizes */
+    padding: 12px 24px;       /* 12px top/bottom (taller) & 24px left/right (wider) */
+    background-color: #0284c7; /* A clean, professional sapphire blue color */
+    color: #ffffff;           /* Crisp white text color */
+    text-decoration: none;    /* Removes the default hyperlink underline */
+    border-radius: 6px;       /* Smooths out the sharp corners */
+    text-align: center;       /* Centers the text horizontally */
+    font-weight: bold;        /* Makes the text pop */
+}
+.cta-button{
+    display: inline-block;    /* Allows us to apply custom spacing and sizes */
+    padding: 12px 24px;       /* 12px top/bottom (taller) & 24px left/right (wider) */
+    background-color: #0284c7; /* A clean, professional sapphire blue color */
+    color: #ffffff;           /* Crisp white text color */
+    text-decoration: none;    /* Removes the default hyperlink underline */
+    border-radius: 6px;       /* Smooths out the sharp corners */
+    text-align: center;       /* Centers the text horizontally */
+    font-weight: bold;        /* Makes the text pop */
+}
+
+/*The Hover State Interaction */
+.btn:hover {
+    background-color: #0369a1; /* Shifts to a deeper oceanic blue on hover */
+    cursor: pointer;          /* Changes the mouse cursor to a pointing hand */
+}
+
+/*The Hover State Interaction */
+.cta-button:hover {
+    background-color: #0369a1; /* Shifts to a deeper oceanic blue on hover */
+    cursor: pointer;          /* Changes the mouse cursor to a pointing hand */
+}
