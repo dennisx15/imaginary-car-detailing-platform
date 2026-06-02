@@ -1,10 +1,10 @@
 from tokenize import String
 
 from fastapi import APIRouter, Depends, Header, HTTPException
-from backend.schemas.appointment import AppointmentCreate
+from backend.schemas.appointment import AppointmentCreate, AppointmentResponse
 
 from backend.database.connection import SessionLocal
-from backend.database.models import Appointment
+from backend.database.models import Appointment, Service
 
 from backend.config import constants
 from datetime import datetime
@@ -23,19 +23,29 @@ def create_appointment(appointment: AppointmentCreate, user_id: int = Depends(ge
     :param user_id: fastAPI runs the get_current_user_id function before executing this route, and passes the returned user_id as an argument to this function. If the token is missing, invalid, or expired, get_current_user_id will raise an HTTPException with a 401 status code, which will automatically return a 401 response to the client and prevent this route from running.
     :param Session: fastAPI runs the get_db function before executing this route, and uses the yielded database session as the db argument for this function. After the route is done, get_db will automatically close the database session.
     """
+
+    #Check if the requested service actually exists on the menu
+    db_service = db.query(Service).get(appointment.service_id)
+    if not db_service:
+        raise HTTPException(
+            status_code=404, 
+            detail=f"Service with ID {appointment.service_id} does not exist"
+        )
    
+
     existing = check_existing_appointment(db, appointment.date)
     if existing:
         print("Time slot already booked")
         raise HTTPException(
             status_code=400,
             detail="An appointment has already been made in this time slot") # this checks if there's already an appointment in the database with the same date and time as the one we're trying to create. If there is, it rolls back the transaction (undoing the db.add() we did earlier), closes the database session, and returns a message indicating that the time slot is already booked.
+    
     db_appointment = create_new_appointment(db, appointment, user_id) # creates a SQLAlchemy ORM object. This is like a Python representation of a row in the appointments table.
 
     print(appointment)
     return {
         "message": "Appointment received",
-        "data": db_appointment.id # return the id of the new appointment
+        "data": db_appointment.service_id # return the id of the new appointment
     }
 
 
@@ -50,7 +60,7 @@ def get_appointments(db: Session = Depends(get_db)):
             "id": appointment.id,
             "name": appointment.name,
             "phone_number": appointment.phone_number,
-            "service": appointment.service,
+            "service_id": appointment.service_id,
             "notes": appointment.notes,
             "date": appointment.date
         }
@@ -71,7 +81,7 @@ def get_appointments_by_user(user_id: int, db: Session = Depends(get_db)):
             "id": appointment.id,
             "name": appointment.name,
             "phone_number": appointment.phone_number,
-            "service": appointment.service,
+            "service_id": appointment.service_id,
             "notes": appointment.notes,
             "date": appointment.date
 
@@ -81,26 +91,32 @@ def get_appointments_by_user(user_id: int, db: Session = Depends(get_db)):
     ]
 
 
-@router.get("/my-appointments")
+# @router.get("/my-appointments")
+# def get_my_appointments(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
+#     """
+#     Get all appointments for the currently logged in user. This endpoint expects an Authorization header with a JWT token, which it decodes to get the user_id, and then queries the database for appointments with that user_id.
+#     """
+
+#     appointments = db.query(Appointment).filter(Appointment.user_id == user_id).all()
+#     return [
+#         {
+#             "id": appointment.id,
+#             "name": appointment.name,
+#             "phone_number": appointment.phone_number,
+#             "service": appointment.service,
+#             "notes": appointment.notes,
+#             "date": appointment.date
+
+#         }
+
+#         for appointment in appointments
+#     ]
+
+@router.get("/my-appointments", response_model=list[AppointmentResponse]) # 📋 Declare your output schema shape
 def get_my_appointments(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
-    """
-    Get all appointments for the currently logged in user. This endpoint expects an Authorization header with a JWT token, which it decodes to get the user_id, and then queries the database for appointments with that user_id.
-    """
-
     appointments = db.query(Appointment).filter(Appointment.user_id == user_id).all()
-    return [
-        {
-            "id": appointment.id,
-            "name": appointment.name,
-            "phone_number": appointment.phone_number,
-            "service": appointment.service,
-            "notes": appointment.notes,
-            "date": appointment.date
-
-        }
-
-        for appointment in appointments
-    ]
+    
+    return appointments # 🎯 Return the raw rows directly!
 
 
 @router.delete("/appointments/{appointment_id}")
@@ -143,5 +159,15 @@ def get_available_slots(date: str, db: Session = Depends(get_db)):
         booking_slots[slot] = appointment is None # if there's an appointment at that time slot, it means it's not available, so we set it to False. If there's no appointment, it means it's available, so we set it to True.
         
     return booking_slots
+
+@router.get("/appointments/services/{id}")
+def parse_service_id(appointment: AppointmentCreate, db: Session = Depends(get_db)):
+    db_service = db.query(Service).get(appointment.service_id)
+    return {
+        "service_name": db_service.name,
+        "service_price": db_service.price,
+        "service_description": db_service.description
+    }
+
 
 

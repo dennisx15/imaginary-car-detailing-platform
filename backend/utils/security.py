@@ -15,7 +15,7 @@ def create_new_appointment(db, appointment: AppointmentCreate, user_id: int):
     """Saves a brand new appointment row to the database."""
     db_appointment = Appointment(
         name=appointment.name,
-        service=appointment.service,
+        service_id=appointment.service_id,
         phone_number=appointment.phone_number,
         notes=appointment.notes,
         date=appointment.date,

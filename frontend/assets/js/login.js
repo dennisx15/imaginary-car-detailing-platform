@@ -14,7 +14,6 @@ form.addEventListener("submit", async (event) => {
             },
             body: JSON.stringify({
                 email: email,
-                //TODO: remove user field and update backend to only require email and password for login
                 password: password
             })
         }

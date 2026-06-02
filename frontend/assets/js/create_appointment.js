@@ -7,13 +7,21 @@ form.addEventListener("submit", async (event) => {//This function will run when 
     event.preventDefault(); // prevents the default form submission behavior, which would cause a page reload
 
     //extract the values from the form fields and store them in variables
+    //const name = document.getElementById("name").value;
+    //const service = document.getElementById("service").value;
+    //const phone_number = document.getElementById("phone_number").value;
+    //const notes = document.getElementById("notes").value;
+    //const appointment_time = document.getElementById("appointment_time").value;
+    //const token = localStorage.getItem("token");
+    //const fullDateTime = `${appointment_time}T${selectedTime}`; // combine the date and time into a single string in ISO format
+
+    const serviceId = parseInt(document.getElementById("service_id").value); // Convert the string "1", "2", or "3" into an integer
     const name = document.getElementById("name").value;
-    const service = document.getElementById("service").value;
     const phone_number = document.getElementById("phone_number").value;
     const notes = document.getElementById("notes").value;
     const appointment_time = document.getElementById("appointment_time").value;
     const token = localStorage.getItem("token");
-    const fullDateTime = `${appointment_time}T${selectedTime}`; // combine the date and time into a single string in ISO format
+    const fullDateTime = `${appointment_time}T${selectedTime}`;
 
 
     
@@ -30,7 +38,7 @@ const response = await authenticatedFetch( // fetch waits for backend response b
             body: JSON.stringify({
                 name: name,
                 phone_number: phone_number,
-                service: service,
+                service_id: serviceId,
                 notes: notes,
                 date: fullDateTime
             }) // this is the actual data we want to send. We create a JavaScript object with the name and service, then convert it to a JSON string with JSON.stringify

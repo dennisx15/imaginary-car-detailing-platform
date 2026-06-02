@@ -76,3 +76,60 @@
     background-color: #0369a1; /* Shifts to a deeper oceanic blue on hover */
     cursor: pointer;          /* Changes the mouse cursor to a pointing hand */
 }
+
+/* 🗄️ The Master Dashboard Grid Container */
+#appointments-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 🪄 Responsive layout grid */
+    gap: 24px; /* Space between the cards */
+    padding: 20px 0;
+}
+
+/* 📄 The Individual Booking Status Card */
+#appointments-container div {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Soft depth shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ✨ Interactive Hover Lift */
+#appointments-container div:hover {
+    transform: translateY(-4px); /* Gently floats upward when hovered */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* 🏷️ Styling the Card Details */
+#appointments-container h3 {
+    margin: 0 0 12px 0;
+    color: #1e293b;
+    font-size: 1.35rem;
+}
+
+#appointments-container p {
+    margin: 6px 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* 🗑️ Destructive Action Buttons (Delete) */
+#appointments-container button {
+    margin-top: 16px;
+    background-color: #ef4444; /* Clean crimson red color */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#appointments-container button:hover {
+    background-color: #dc2626; /* Darkens smoothly on mouse hover */
+}

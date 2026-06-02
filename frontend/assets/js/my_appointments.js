@@ -14,13 +14,26 @@ async function loadAppointments() {
     const container = document.getElementById("appointments-container"); // get the container element in html where we want to display the appointments
 
     appointments.forEach(appointment => {
+        const appointmentDate = new Date(appointment.date);
+
+      //Format the date and time using clean, human-readable options
+        const formattedDateTime = appointmentDate.toLocaleString('en-US', {
+        weekday: 'short', // "Mon"
+        year: 'numeric',  // "2026"
+        month: 'short',   // "Jun"
+        day: 'numeric',   // "1"
+        hour: '2-digit',  // "09"
+        minute: '2-digit' // "00"
+    });
         const appointmentElement = document.createElement("div");// create a new div element for each appointment
         appointmentElement.innerHTML = `
             <h3>${appointment.name}</h3>
             <p>Phone: ${appointment.phone_number}</p>
-            <p>Service: ${appointment.service}</p>
+            <p>Service: ${appointment.service.name}</p>
+            <p>Description: ${appointment.service.description}</p>
+            <p>Price: ${appointment.service.price}</p>
             <p>Notes: ${appointment.notes}</p>
-            <p>Date: ${appointment.date}</p>
+            <p>Appointment: ${formattedDateTime}</p>
             <button onclick="deleteAppointment(${appointment.id})">
             Delete
             </button>
