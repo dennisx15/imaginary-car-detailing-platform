@@ -43,23 +43,40 @@ async function loadAppointments() {
 }
 loadAppointments()
 
-async function deleteAppointment(id){
+async function deleteAppointment(appointmentId) {
+    //Confirm with the user before permanently erasing data
+    if (!confirm("Are you sure you want to cancel this car detailing appointment?")) {
+        return;
+    }
 
-    const token = localStorage.getItem("token");
-    await authenticatedFetch(
-        
-        `${API_BASE_URL}/my-appointments/${id}`,
+    const token = localStorage.getItem("token"); // Grab the logged-in user's token
 
-        {
-            method: "DELETE",
-
-            headers: {
-                "Authorization":
-                    `Bearer ${token}`
+    try {
+        // Fire off the network call using your explicit DELETE method
+        const response = await authenticatedFetch(
+            `${API_BASE_URL}/my-appointments/${appointmentId}`, // Passes the ID directly in the URL path 
+            {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}` // Protect the route with the user's credential token
+                }
             }
-        }
-    );
+        );
 
-    location.reload();
+        const data = await response.json(); // Wait to parse the text response message
+
+        if (!response.ok) {
+            alert(data.detail || "Failed to delete appointment.");
+            return;
+        }
+
+        //Notify the user and reload the view to reflect the changes
+        alert("Appointment successfully canceled!");
+        location.reload(); // Simple way to refresh the page and show the updated list of appointments
+
+    } catch (error) {
+        console.error("Error during deletion:", error);
+        alert("An error occurred while attempting to cancel the appointment.");
+    }
 }
 

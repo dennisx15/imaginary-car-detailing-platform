@@ -22,6 +22,6 @@ form.addEventListener("submit", async (event) => {
         alert("Account created successfully! Please log in.");
         window.location.href = "login.html";
     } else {
-        alert("Account creation failed: " + data.message);
+        alert("Account creation failed: " + data.detail);
     }
 });

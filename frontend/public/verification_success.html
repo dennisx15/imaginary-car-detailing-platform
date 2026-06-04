@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Verified | Apex Detailers 🧼</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: radial-gradient(circle at center, #1e2633 0%, #0f131a 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 50px 40px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            max-width: 480px;
+            width: 90%;
+            transform: translateY(0);
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .success-icon-wrapper {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(46, 204, 113, 0.3);
+        }
+        .success-icon {
+            font-size: 42px;
+            font-weight: bold;
+            color: white;
+            line-height: 1;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+        .btn-login {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 20px rgba(29, 78, 216, 0.2);
+            width: 100%;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(29, 78, 216, 0.35);
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+        }
+        .btn-login:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="success-icon-wrapper">
+            <span class="success-icon">✓</span>
+        </div>
+        <h1>Email Verified!</h1>
+        <p>Your communication channel is officially secured. Your customer account dashboard is now fully unlocked and ready to schedule detailing appointments.</p>
+        <a href="login.html" class="btn-login">Proceed to Login</a>
+    </div>
+
+</body>
+</html>

@@ -21,8 +21,8 @@ form.addEventListener("submit", async (event) => {
     const data = await response.json();
     console.log(data);
 
-    if (!data.access_token) {
-        alert("Login failed: " + data.message);
+    if(!response.ok) {
+        alert("Login failed: " + data.detail);
         return;
     }
 

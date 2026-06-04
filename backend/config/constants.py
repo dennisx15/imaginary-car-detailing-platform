@@ -20,3 +20,5 @@ load_dotenv() #load .env to access the values in there
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 DATABASE_URL = os.getenv("DATABASE_URL")
+API_BASE_URL = os.getenv("API_BASE_URL")
+FRONTEND_BASE_URL = os.getenv("FRONTEND_BASE_URL")

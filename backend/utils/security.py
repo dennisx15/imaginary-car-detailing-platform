@@ -1,15 +1,26 @@
+from datetime import datetime, timedelta
 from fastapi import Header, HTTPException
 from jose import jwt, JWTError, ExpiredSignatureError
 from backend.config.constants import SECRET_KEY, ALGORITHM
 from backend.database.connection import SessionLocal
-from backend.database.models import Appointment
+from backend.database.models import Appointment, User
 from backend.schemas.appointment import AppointmentCreate
 from sqlalchemy.orm import Session
+
+from backend.schemas.user import UserRegister
 
 
 def check_existing_appointment(db, appointment_date):
     """Checks if a time slot is already taken."""
     return db.query(Appointment).filter(Appointment.date == appointment_date).first()
+
+def check_existing_account(db, user: UserRegister):
+    existing_user = db.query(User).filter(User.email == user.email).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=400, 
+            detail="An account is already registered under this email address."
+        )
 
 def create_new_appointment(db, appointment: AppointmentCreate, user_id: int):
     """Saves a brand new appointment row to the database."""
@@ -25,6 +36,24 @@ def create_new_appointment(db, appointment: AppointmentCreate, user_id: int):
     db.commit() # this is when the SQL INSERT statement is actually sent to the database. The new appointment is now stored in the database.
     db.refresh(db_appointment) # reloads object from database. Because PostgreSQL automatically generates an id for new rows, this is how we get the generated id back into our db_appointment object.
     return db_appointment
+
+def create_access_token(user_id: int):
+
+    payload = {
+
+        "user_id": user_id,
+
+        "exp": datetime.utcnow() + timedelta(hours=1) # token expires in 1 hour
+        
+    }
+
+    token = jwt.encode(
+        payload,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    ) # this generates a JWT token with the user_id and expiration time in the payload, signed with the secret key and algorithm we defined earlier.
+
+    return token
 
 def decode_token(token: str):
     """

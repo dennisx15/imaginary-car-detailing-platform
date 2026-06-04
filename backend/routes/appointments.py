@@ -49,46 +49,39 @@ def create_appointment(appointment: AppointmentCreate, user_id: int = Depends(ge
     }
 
 
-@router.get("/appointments")
-def get_appointments(db: Session = Depends(get_db)):
-    """
-    Get all appointments from the database and return them as a list.
-    """
-    appointments = db.query(Appointment).all() # this is how you query the database with SQLAlchemy. It translates to "SELECT * FROM appointments" in SQL. The result is a list of Appointment objects.
-    return [
-        {
-            "id": appointment.id,
-            "name": appointment.name,
-            "phone_number": appointment.phone_number,
-            "service_id": appointment.service_id,
-            "notes": appointment.notes,
-            "date": appointment.date
-        }
+# @router.get("/appointments")
+# def get_appointments(db: Session = Depends(get_db)):
+#     """
+#     Get all appointments from the database and return them as a list.
+#     """
+#     appointments = db.query(Appointment).all() # this is how you query the database with SQLAlchemy. It translates to "SELECT * FROM appointments" in SQL. The result is a list of Appointment objects.
+#     return [
+#         {
+#             "id": appointment.id,
+#             "name": appointment.name,
+#             "phone_number": appointment.phone_number,
+#             "service_id": appointment.service_id,
+#             "notes": appointment.notes,
+#             "date": appointment.date
+#         }
 
-        for appointment in appointments
-    ]
+#         for appointment in appointments
+#     ]
+
+@router.get("/appointments", response_model=list[AppointmentResponse]) # 📋 Declare your output schema shape
+def get_appointments(db: Session = Depends(get_db)):
+    appointments = db.query(Appointment).all()
+    
+    return appointments #Return the raw rows directly!
 
 
 @router.get("/appointments/{user_id}")
-def get_appointments_by_user(user_id: int, db: Session = Depends(get_db)):
+def get_appointments_by_user(user_id: int, db: Session = Depends(get_db), response_model = list[AppointmentResponse]):
     """
     Get all appointments for a specific user from the database and return them as a list. The user_id is passed in the URL, and FastAPI automatically converts it to an integer because we specified user_id: int.
     """
     appointments = db.query(Appointment).filter(Appointment.user_id == user_id).all() # this translates to "SELECT * FROM appointments WHERE user_id = {user_id}" in SQL. The result is a list of Appointment objects that match the user_id.
-    
-    return [
-        {
-            "id": appointment.id,
-            "name": appointment.name,
-            "phone_number": appointment.phone_number,
-            "service_id": appointment.service_id,
-            "notes": appointment.notes,
-            "date": appointment.date
-
-        }
-
-        for appointment in appointments
-    ]
+    return appointments
 
 
 # @router.get("/my-appointments")
@@ -116,7 +109,7 @@ def get_appointments_by_user(user_id: int, db: Session = Depends(get_db)):
 def get_my_appointments(user_id: int = Depends(get_current_user_id), db: Session = Depends(get_db)):
     appointments = db.query(Appointment).filter(Appointment.user_id == user_id).all()
     
-    return appointments # 🎯 Return the raw rows directly!
+    return appointments # Return the raw rows directly!
 
 
 @router.delete("/appointments/{appointment_id}")

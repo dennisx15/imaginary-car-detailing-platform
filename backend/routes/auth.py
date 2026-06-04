@@ -1,11 +1,14 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
 from backend.database.connection import SessionLocal
-from backend.schemas.user import UserCreate, UserLogin, UserRegister
+from backend.schemas.user import UserCreate, UserLogin, UserRegister, UserResponse
 from backend.database.models import User
 from jose import jwt, JWTError, ExpiredSignatureError
-from datetime import datetime, timedelta
 from backend.config import constants
+
+from backend.utils.email import send_verification_email
+from backend.utils.security import *
 
 
 #need to set a secret key and algorithm for JWT token generation. In a real application, you should use a strong, random secret key and keep it safe (not hardcoded in your code). For simplicity, we'll just use a hardcoded string here.
@@ -24,52 +27,57 @@ def hash_password(password: str):
     return pwd_context.hash(password)
 
 
-@router.post("/register")
-def register(user: UserRegister):
-    """
-    register a new user. This endpoint expects a JSON object with an email and password, hashes the password, and stores the new user in the database.
-    """
 
-    db = SessionLocal()
-    try:
-        hashed_password = hash_password(
-        user.password
-    )
-        new_user = User(
+@router.post("/register", response_model=UserResponse)
+def register_user(user: UserCreate, db: Session = Depends(get_db)):
+    # 1. Look for pre-existing records...
+    existing_user = db.query(User).filter(User.email == user.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="An account is already registered under this email.")
+
+    # 2. Add the unverified user profile row to the database...
+    new_user = User(
         email=user.email,
-        password_hash=hashed_password
-    ) # create a new User object with the email and hashed password. This is a SQLAlchemy ORM object that represents a row in the users table.
-        db.add(new_user) # tell SQLAlchemy to track this new user for insertion into the database.
-        db.commit() # this is when the SQL INSERT statement is actually sent to the database. The new user is now stored in the database.
+        password_hash=hash_password(user.password),
+        is_verified=False # Locked until they click!
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
-        return {
-        "message": "User created"
-        }
-    except Exception as e:
-        db.rollback() # if there's an error (like a duplicate email), we rollback the transaction to undo any changes.
-        raise HTTPException(
-            status_code=400,
-            detail="Error creating user")
+    # 3. 🗝️ Generate the temporary token signatures (from our security utils)
+    token = create_access_token(new_user.id)
 
+    # 4. 🗺️ Construct the target verification address url string
+    # (Pointing straight to the callback validation route we written earlier!)
+    verification_link = f"{constants.API_BASE_URL}/verify-email?token={token}"
+    #verification_link = f"http://127.0.0.1:8000/verify-email?token={token}"
+
+    # 5. 🚀 Dispatch the verification message packet
+    send_verification_email(new_user.email, verification_link)
+
+    return new_user
 
 @router.post("/login")
-def login(user: UserLogin):
+def login(user: UserLogin, db: Session = Depends(get_db)):
     """
     This endpoint is for logging in. It checks if a user with the given email exists, and if the password is correct. In a real application, you would also generate and return a JWT token here, but for simplicity, we'll just return a success message if the login is successful.
     """
-    db = SessionLocal()
-
     db_user = db.query(User).filter(User.email == user.email).first() # query the database for a user with the given email. This translates to "SELECT * FROM users WHERE email = {user.email} LIMIT 1" in SQL. The result is a User object or None if no user is found.
 
     if not db_user:
-        return {
-            "message": "Invalid email or password"
-        }
+        raise HTTPException(status_code=400, detail="Invalid email or password")
 
+    # Match credentials
     if not pwd_context.verify(user.password, db_user.password_hash):
-        return {
-            "message": "Invalid email or password"
-        }
+        raise HTTPException(status_code=400, detail="Invalid email or password")
+        
+    # THE SECURE BLOCK: Raise a true 403 Forbidden network error.
+    if not db_user.is_verified:
+        raise HTTPException(
+            status_code=403, 
+            detail="Please verify your email address before logging in."
+        )
     token = create_access_token(
     db_user.id)
 
@@ -80,19 +88,28 @@ def login(user: UserLogin):
     "token_type": "bearer" # this is a convention to indicate that the token is a bearer token, which means the client should include it in the Authorization header of future requests like "Authorization: Bearer {token}"
     }
 
-def create_access_token(user_id: int):
 
-    payload = {
+@router.get("/verify-email")
+def verify_email(token: str, db: Session = Depends(get_db)):
+    """
+    This endpoint is for verifying the user's email. It expects a token in the query parameters, which it decodes to get the user_id, and then updates the corresponding user in the database to set is_verified to True.
+    """
+    try:
+        payload = decode_token(token)
+        user_id = payload.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=400, detail="Invalid token")
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=400, detail="Token has expired")
+    except JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token")
 
-        "user_id": user_id,
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
 
-        "exp": datetime.utcnow() + timedelta(hours=1) # token expires in 1 hour
-    }
+    user.is_verified = True
+    db.commit()
 
-    token = jwt.encode(
-        payload,
-        SECRET_KEY,
-        algorithm=ALGORITHM
-    ) # this generates a JWT token with the user_id and expiration time in the payload, signed with the secret key and algorithm we defined earlier.
-
-    return token
+    redirect_url = f"{constants.FRONTEND_BASE_URL}/verification_success.html"
+    return RedirectResponse(url=redirect_url) # Redirect the user to a frontend page that says "Email verified successfully!" or something like that. You would need to create this page in your frontend assets.

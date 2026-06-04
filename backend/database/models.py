@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, relationship # 
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy import DateTime
 
 
@@ -35,6 +35,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)#Primary key for the users table, unique identifier for each user. increments by 1 each time a user is added
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
+    is_verified = Column(Boolean, default=False) # this column will store whether the user's email has been verified. It's a boolean value that defaults to False when a new user is created.
 
 
 class Service(Base):
