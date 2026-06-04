@@ -1,47 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Apex Detailer</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
+<body class="login-page-body">
 
-<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="brand-badge"> Apex Detailers </div>
+            <h1>Welcome Back</h1>
+            <p>Enter credentials to access your detail dashboard</p>
+        </div>
 
-    <h1>Login</h1>
+        <form id="login-form">
+            <div class="form-group">
+                <input 
+                    type="email" 
+                    id="email" 
+                    placeholder="Email Address" 
+                    required
+                >
+            </div>
 
-    <form id="login-form">
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Password" 
+                    required
+                >
+            </div>
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Email"
-            required
-        >
+            <button type="submit" class="submit-btn">
+                Sign In
+            </button>
+        </form>
 
-        <br><br>
+        <div class="divider">or</div>
 
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            required
-        >
-
-        <br><br>
-
-        <button type="submit">
-            Login
+        <button id="create-account-button" class="secondary-btn">
+            Create an Account
         </button>
-    </form>
-
-    <button id="create-account-button">
-        Create Account
-    </button>
+    </div>
 
     <script src="../assets/js/config.js"></script>
     <script src="../assets/js/login.js"></script>
 
 </body>
-
 </html>
