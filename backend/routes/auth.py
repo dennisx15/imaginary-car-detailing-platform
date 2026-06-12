@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import RedirectResponse
 from passlib.context import CryptContext
 from backend.database.connection import SessionLocal
+from backend.schemas.tokens import TokenResponse
 from backend.schemas.user import UserCreate, UserLogin, UserRegister, UserResponse
 from backend.database.models import User
 from jose import jwt, JWTError, ExpiredSignatureError
@@ -45,20 +46,20 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    # 3. 🗝️ Generate the temporary token signatures (from our security utils)
+    # Generate the temporary token signatures (from our security utils)
     token = create_access_token(new_user.id)
 
-    # 4. 🗺️ Construct the target verification address url string
+    # Construct the target verification address url string
     # (Pointing straight to the callback validation route we written earlier!)
     verification_link = f"{constants.API_BASE_URL}/verify-email?token={token}"
     #verification_link = f"http://127.0.0.1:8000/verify-email?token={token}"
 
-    # 5. 🚀 Dispatch the verification message packet
+    # Dispatch the verification message packet
     send_verification_email(new_user.email, verification_link)
 
     return new_user
 
-@router.post("/login")
+@router.post("/login", response_model=TokenResponse)
 def login(user: UserLogin, db: Session = Depends(get_db)):
     """
     This endpoint is for logging in. It checks if a user with the given email exists, and if the password is correct. In a real application, you would also generate and return a JWT token here, but for simplicity, we'll just return a success message if the login is successful.
@@ -81,12 +82,10 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     token = create_access_token(
     db_user.id)
 
-    return {
-
-    "access_token": token,
-
-    "token_type": "bearer" # this is a convention to indicate that the token is a bearer token, which means the client should include it in the Authorization header of future requests like "Authorization: Bearer {token}"
-    }
+    return TokenResponse(
+        access_token=token,
+        token_type="bearer"
+    )
 
 
 @router.get("/verify-email")

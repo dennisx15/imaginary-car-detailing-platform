@@ -1,0 +1,127 @@
+/* Shared Global Design Base Tokens */
+.admin-body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f172a; /* Sleek dark luxury background theme */
+    color: #f8fafc;
+}
+
+/* Unified Control Header Bar Layout */
+.admin-navbar {
+    background-color: #1e293b;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #334155;
+}
+
+/* Custom Styled Drop-down Selector Box Box */
+.nav-dropdown {
+    background-color: #334155;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+}
+
+.nav-dropdown:focus {
+    border-color: #38bdf8; /* Soft blue focus highlight ring */
+}
+
+/* Inline Sub-Subject Horizontal Link Menu Rows */
+.sub-subject-links {
+    display: flex;
+    gap: 16px;
+}
+
+.tab-link {
+    color: #94a3b8;
+    text-decoration: none;
+    padding: 8px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+/* Visual Feedback States */
+.tab-link:hover {
+    color: #f8fafc;
+    background-color: #334155; /* Subtle micro-hover shift highlighting elements */
+}
+
+.tab-link.active {
+    color: #38bdf8; /* Highlight accent matching selection state */
+    background-color: #0f172a;
+    font-weight: 600;
+}
+
+/* Main Content Workspace Padding Wrapper Box */
+.admin-content {
+    padding: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+
+/* 🗄️ The Master Dashboard Grid Container */
+#appointments-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 🪄 Responsive layout grid */
+    gap: 24px; /* Space between the cards */
+    padding: 20px 0;
+}
+
+/* 📄 The Individual Booking Status Card */
+#appointments-container div {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* Soft depth shadow */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ✨ Interactive Hover Lift */
+#appointments-container div:hover {
+    transform: translateY(-4px); /* Gently floats upward when hovered */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* 🏷️ Styling the Card Details */
+#appointments-container h3 {
+    margin: 0 0 12px 0;
+    color: #1e293b;
+    font-size: 1.35rem;
+}
+
+#appointments-container p {
+    margin: 6px 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* 🗑️ Destructive Action Buttons (Delete) */
+#appointments-container button {
+    margin-top: 16px;
+    background-color: #ef4444; /* Clean crimson red color */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#appointments-container button:hover {
+    background-color: #dc2626; /* Darkens smoothly on mouse hover */
+}

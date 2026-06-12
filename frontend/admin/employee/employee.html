@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Employees</title>
+    <link rel="stylesheet" href="../../assets/css/admin-shared.css">
+</head>
+<body class="admin-body">
+
+    <header class="admin-navbar">
+        <div class="nav-left">
+            <select id="subject-selector" class="nav-dropdown" onchange="switchSubject(this.value)">
+                <option value="client">Client</option>
+                <option value="employee" selected>Employee</option>
+                <option value="business">Business</option>
+            </select>
+        </div>
+        <nav class="nav-right sub-subject-links">
+            <a href="employee.html" class="tab-link active">Staff Roster</a>
+            <a href="subsubjects/schedules.html" class="tab-link">Schedules</a>
+        </nav>
+    </header>
+
+    <main class="admin-content">
+        <h1>Employee Roster Control</h1>
+        <p>Manage staff parameters, assign internal security flags, and track active team members.</p>
+    </main>
+
+    <script>
+        function switchSubject(subject) {
+            if (subject === 'client') window.location.href = '../client/client.html';
+            else if (subject === 'employee') window.location.href = 'employee.html';
+            else if (subject === 'business') window.location.href = '../business/business.html';
+        }
+    </script>
+</body>
+</html>

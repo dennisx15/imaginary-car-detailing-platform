@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Business</title>
+    <link rel="stylesheet" href="../../assets/css/admin-shared.css">
+</head>
+<body class="admin-body">
+
+    <header class="admin-navbar">
+        <div class="nav-left">
+            <select id="subject-selector" class="nav-dropdown" onchange="switchSubject(this.value)">
+                <option value="client">Client</option>
+                <option value="employee">Employee</option>
+                <option value="business" selected>Business</option>
+            </select>
+        </div>
+        
+        <nav class="nav-right sub-subject-links">
+            <a href="business.html" class="tab-link active">Overview</a>
+            <a href="subsubjects/service.html" class="tab-link">Services</a>
+            <a href="subsubjects/statistics.html" class="tab-link">Statistics</a>
+        </nav>
+    </header>
+
+    <main class="admin-content">
+        <h1>Business Management Overview</h1>
+        <p>Welcome to the core operational control dashboard.</p>
+    </main>
+
+    <script>
+        function switchSubject(subject) {
+            if (subject === 'client') {
+                window.location.href = '../client/client.html';
+            } else if (subject === 'employee') {
+                window.location.href = '../employee/employee.html';
+            } else if (subject === 'business') {
+                window.location.href = '../business/business.html';
+            }
+        }
+    </script>
+</body>
+</html>

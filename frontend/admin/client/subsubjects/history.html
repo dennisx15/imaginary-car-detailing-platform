@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients - History</title>
+    <link rel="stylesheet" href="../../../assets/css/admin-shared.css">
+</head>
+<body class="admin-body">
+
+    <header class="admin-navbar">
+        <div class="nav-left">
+            <select id="subject-selector" class="nav-dropdown" onchange="switchSubject(this.value)">
+                <option value="client" selected>Client</option>
+                <option value="employee">Employee</option>
+                <option value="business">Business</option>
+            </select>
+        </div>
+        <nav class="nav-right sub-subject-links">
+            <a href="../client.html" class="tab-link">Profiles</a>
+            <a href="history.html" class="tab-link active">Booking History</a>
+        </nav>
+    </header>
+
+    <main class="admin-content">
+        <h1>Global Booking Logs</h1>
+        <p>Look back over archived client car wash logs, invoices, and past appointments.</p>
+    </main>
+
+    <div id="appointments-container"></div>
+
+    <script>
+        function switchSubject(subject) {
+            if (subject === 'client') window.location.href = '../client.html';
+            else if (subject === 'employee') window.location.href = '../../employee/employee.html';
+            else if (subject === 'business') window.location.href = '../../business/business.html';
+        }
+    </script>
+
+    <script src="../../../assets/js/config.js"></script>
+    <script src="../../../assets/js/admin.js"></script>
+</body>
+</html>

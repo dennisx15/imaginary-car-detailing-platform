@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fastapi import Header, HTTPException
+from fastapi import Header, HTTPException, Depends
 from jose import jwt, JWTError, ExpiredSignatureError
 from backend.config.constants import SECRET_KEY, ALGORITHM
 from backend.database.connection import SessionLocal
@@ -7,7 +7,7 @@ from backend.database.models import Appointment, User
 from backend.schemas.appointment import AppointmentCreate
 from sqlalchemy.orm import Session
 
-from backend.schemas.user import UserRegister
+from backend.schemas.user import UserRegister, UserResponse, UserLogin
 
 
 def check_existing_appointment(db, appointment_date):
@@ -75,7 +75,7 @@ def decode_token(token: str):
         raise HTTPException(
             status_code=401,
             detail="Invalid token"
-        )
+        ) # checks if the token has been tampered with or is otherwise invalid. If the token is valid but has expired, it raises a different error indicating that the token has expired.
 
 def get_current_user_id(authorization: str = Header(None)) -> int:
     """
@@ -102,8 +102,8 @@ def get_current_user_id(authorization: str = Header(None)) -> int:
         raise HTTPException(status_code=401, detail="Token has expired")
     except (JWTError, IndexError):
         raise HTTPException(status_code=401, detail="Invalid token")
-    
 
+    
 def get_db():
     db = SessionLocal() # 1. Open the session before the route runs
     try:
@@ -120,3 +120,5 @@ def delete_db(db: Session, appointment):
     else:
         message = "Appointment not found or does not belong to user"
     return message
+
+

@@ -18,6 +18,9 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     id: int
     email: str
+    is_verified: bool
+    is_admin: bool
+    is_employee: bool
 
     class Config:
         from_attributes = True #Allows Pydantic to read raw database rows automatically

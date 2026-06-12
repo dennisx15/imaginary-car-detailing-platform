@@ -37,6 +37,10 @@ class User(Base):
     password_hash = Column(String)
     is_verified = Column(Boolean, default=False) # this column will store whether the user's email has been verified. It's a boolean value that defaults to False when a new user is created.
 
+    # THE NEW SECURITY FLAGS (False by default)
+    is_admin = Column(Boolean, default=False)
+    is_employee = Column(Boolean, default=False)
+
 
 class Service(Base):
     __tablename__ = "services"
@@ -45,3 +49,10 @@ class Service(Base):
     name = Column(String, unique=True, index=True, nullable=False)
     description = Column(String)
     price = Column(Integer, nullable=False)
+
+
+class Employee(Base):
+    __tablename__ = "employees"
+
+    id = Column(Integer, primary_key=True, index=True)
+    
