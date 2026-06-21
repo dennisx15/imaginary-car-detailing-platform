@@ -1,8 +1,8 @@
 from fastapi import FastAPI # toolkit for creating web servers and APIs
-from backend.routes import faq, appointments
+from backend.routes import faq, appointments, auth
+from backend.routes.admin import auth as admin_auth
 from backend.database.connection import engine
 from fastapi.middleware.cors import CORSMiddleware # this is a security feature that prevents other websites from making requests to our backend without permission. We will configure it to allow requests from our frontend.
-from backend.routes import auth
 from backend.database.models import User, Appointment
 
 app = FastAPI() # this is the web application object
@@ -23,3 +23,4 @@ def root():
 app.include_router(faq.router) # this tells the app to include the routes defined in faq.py
 app.include_router(appointments.router) # this tells the app to include the routes defined in appointments.py
 app.include_router(auth.router)
+app.include_router(admin_auth.router, prefix="/admin") # this tells the app to include the routes defined in admin/auth.py, and prefix them with /admin

@@ -77,7 +77,7 @@ def decode_token(token: str):
             detail="Invalid token"
         ) # checks if the token has been tampered with or is otherwise invalid. If the token is valid but has expired, it raises a different error indicating that the token has expired.
 
-def get_current_user_id(authorization: str = Header(None)) -> int:
+def get_current_user_id(authorization: str = Header(None), check_admin: bool = False) -> int:
     """
     A reusable dependency that intercepts requests, extracts the JWT,
     validates it, and returns the authenticated user's ID.
@@ -96,12 +96,24 @@ def get_current_user_id(authorization: str = Header(None)) -> int:
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token payload")
             
+        if check_admin:
+            # Check if the user is an admin
+            if not payload.get("is_admin"):
+                raise HTTPException(status_code=403, detail="Access denied")
+
         return user_id
         
     except ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token has expired")
     except (JWTError, IndexError):
         raise HTTPException(status_code=401, detail="Invalid token")
+
+
+def get_current_user_id_admin(authorization: str = Header(None)) -> int:
+    """
+    A wrapper around get_current_user_id that specifically checks for admin privileges.
+    """
+    return get_current_user_id(authorization, check_admin=True)
 
     
 def get_db():

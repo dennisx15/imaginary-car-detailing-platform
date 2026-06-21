@@ -68,6 +68,7 @@ def create_appointment(appointment: AppointmentCreate, user_id: int = Depends(ge
 #         for appointment in appointments
 #     ]
 
+#TODO: Get rid of the below code. Admin route is now separate from user route.
 @router.get("/appointments", response_model=list[AppointmentResponse]) # 📋 Declare your output schema shape
 def get_appointments(db: Session = Depends(get_db)):
     appointments = db.query(Appointment).all()
@@ -112,6 +113,7 @@ def get_my_appointments(user_id: int = Depends(get_current_user_id), db: Session
     return appointments # Return the raw rows directly!
 
 
+#TODO: Get rid of the below code. Admin route is now separate from user route.
 @router.delete("/appointments/{appointment_id}")
 def delete_appointment(appointment_id: int, db: Session = Depends(get_db)):
     """
